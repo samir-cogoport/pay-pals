@@ -71,14 +71,20 @@ const decodeJwtPayload = (token: string): JwtPayload | null => {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const token = request.cookies.get(AUTH_TOKEN)?.value
+  const isAuthorized = isValidToken(token);
 
-  if (isPublicPath(pathname) || pathname.startsWith('/_next') || pathname.startsWith('/static')) {
+
+  if ((!isAuthorized && isPublicPath(pathname)) || pathname.startsWith('/_next') || pathname.startsWith('/static')) {
     return NextResponse.next()
   }
 
-  const token = request.cookies.get(AUTH_TOKEN)?.value
+  if(isPublicPath(pathname) && isAuthorized){
+    const dashboardUrl = new URL('/dashboard', request.url)
+    return NextResponse.redirect(dashboardUrl)
+  }
 
-  if (!isValidToken(token)) {
+  if (!isAuthorized) {
     const loginUrl = new URL('/login', request.url)
     return NextResponse.redirect(loginUrl)
   }
