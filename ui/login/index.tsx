@@ -6,8 +6,7 @@ import Link from "next/link";
 import Logo from "@/components/Logo";
 import { useRequest } from "@/request/use-request";
 import { useForm } from "react-hook-form";
-import { AUTH_TOKEN } from "@/constants/cookies";
-import { setCookie } from "cookies-next";
+import { useClientAuth } from "@/hooks/use-client-auth";
 
 
 type SignupFormValues = {
@@ -23,14 +22,20 @@ const Login = () => {
 		method: 'POST',
 	},{manual: true})
   
+	const handleClientAuth = useClientAuth()
 	const onSubmit = async (values: SignupFormValues) => {
-		const resp = await trigger({ data: {
-			email: values.email,
-			password: values.password
-		} });
-		if(resp?.data?.token) {
-			setCookie(AUTH_TOKEN, resp.data.token);
-			window.location.href = '/dashboard';
+		try {
+			const resp = await trigger({ data: {
+				email: values.email,
+				password: values.password
+			} });
+			if(resp?.data?.token) {
+				console.log(resp?.data?.token, 'token??')
+				handleClientAuth(resp.data.token);
+			}
+		}
+		catch(e) {
+			console.log(e)
 		}
 	}
   

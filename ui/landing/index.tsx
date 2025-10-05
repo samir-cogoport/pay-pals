@@ -2,33 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {  ArrowRight, CheckCircle2 } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import Link from "next/link";
 import { benefits, features } from "./config";
-import Logo from "@/components/Logo";
 
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Logo/>
-            <span className="text-lg md:text-xl font-bold text-foreground">PayPals</span>
-          </div>
-          <div className="flex items-center gap-2 md:gap-4">
-            <ThemeToggle />
-            <Link href="/login">
-              <Button variant="ghost" size="sm" className="text-sm md:text-base">Log in</Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm" className="bg-gradient-hero text-sm md:text-base">Sign up</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-hero opacity-5 pointer-events-none" />
